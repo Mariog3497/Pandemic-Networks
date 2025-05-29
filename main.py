@@ -1,16 +1,40 @@
+isSimulated = True
 def main():
     option = 0
     while not option == 4:
         option = showMainMenu()
         if option == 1:
             typeNet = showNetworks()
-            
+            isSimulated =True
+            simulationNetwork(typeNet)    
         if option == 2:
             typeNet = showNetworks()
             
         if option == 3:
             print("#showPandemicEvolution()")
-               
+
+def simulationNetwork(typeNet):
+    if typeNet == 1:
+        simulationErdosRenyi()
+
+def simulationErdosRenyi():
+    global graph
+    global isSimulated
+    nodes = 10
+    probability = 0.3
+    
+    if not isSimulated:
+        print("Set number of nodes (N)")
+        nodes = chooseOption(1, 100, False)
+        
+        print("Set probability of two nodes connection (P)")
+        probability = chooseOption(0, 1, True)
+
+
+    print("Network Erdős-Rényi configured:")
+    print(f"\tNumber of nodes set (N): {nodes}")
+    print(f"\tProbability that and edge exist between two nodes set (P): {probability}")
+
 def showMainMenu():
     print("Network Simulator")
     print("1. Network Simulation")
