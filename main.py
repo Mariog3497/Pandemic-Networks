@@ -1,24 +1,29 @@
 isSimulated = True
 def main():
+    global isSimulated
     option = 0
     while not option == 4:
         option = showMainMenu()
         if option == 1:
             typeNet = showNetworks()
             isSimulated =True
-            simulationNetwork(typeNet)    
+            simulationNetwork(typeNet)
         if option == 2:
             typeNet = showNetworks()
-            
+            isSimulated = False
+            simulationNetwork(typeNet)
         if option == 3:
-            print("#showPandemicEvolution()")
+            print("showPandemicEvolution()")
 
 def simulationNetwork(typeNet):
     if typeNet == 1:
         simulationErdosRenyi()
+    if typeNet == 2:
+        simulationWatts()
+    if typeNet == 3:
+        simulationBarabasi()    
 
 def simulationErdosRenyi():
-    global graph
     global isSimulated
     nodes = 10
     probability = 0.3
@@ -34,6 +39,46 @@ def simulationErdosRenyi():
     print("Network Erdős-Rényi configured:")
     print(f"\tNumber of nodes set (N): {nodes}")
     print(f"\tProbability that and edge exist between two nodes set (P): {probability}")
+
+def simulationWatts():
+    nodes = 10
+    k = 4
+    probabilityRewired = 0.3
+    
+    if not isSimulated:
+        print("Set number of nodes (N)")
+        nodes = chooseOption(1, 100, False)
+        k = -1
+        print("Number of nearest neighbors each node is initially connected to (K)")
+        while k < 0 or k >= nodes or k % 2 != 0:
+            k = chooseOption(0,nodes,False)
+            if k < 0 or k >= nodes or k % 2 != 0:
+                print(f"\033[91m❌ k must be greater or equal 0, smaller than nodes and even '{k}' is not a valid option\033[0m")
+            
+        print("Set rewire probability (P)")
+        probabilityRewired = chooseOption(0, 1, True)
+
+    print("Network Watts-Strogatz configured:")
+    print(f"\tNumber of nodes set (N): {nodes}")
+    print(f"\tNumber of nearest neighbors each node is initially connected to (K): {k}")
+    print(f"\tRewire Probability set (P): {probabilityRewired}")
+    
+    
+def simulationBarabasi():
+    global isSimulated
+    nodes = 10
+    m = 2
+    if not isSimulated:
+        print("Set number of nodes (N)")
+        nodes = chooseOption(1, 100, False)
+        print("Number of edges to attach from each new node (M)")
+        m = chooseOption(1,nodes,False)
+        
+    print("Network Watts-Strogatz configured:")
+    print(f"\tNumber of nodes set (N): {nodes}")
+    print(f"\tNumber of edges to attach from each new node (M): {m}")
+    
+    
 
 def showMainMenu():
     print("Network Simulator")
