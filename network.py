@@ -1,25 +1,32 @@
 from abc import ABC, abstractmethod
 from util import chooseOption
+import networkx as nx
 
 class Network(ABC):
-    def __init__(self,simulated):
+    def __init__(self,simulated, name):
         self.nodes = None
         self.simulated = simulated
+        self.name = name
     
     @abstractmethod
     def configuration(self):
         pass
     
+    @abstractmethod
+    def graph(self):
+        pass
+    
         
 class ErdosRenyi(Network):
     def __init__(self,simulated):
-        super().__init__(simulated)
+        super().__init__(simulated, "Erdős-Rényi")
         self.nodes = 10
         self.probabilityConnections = 0.3
+        
 
     def configuration(self):
         
-        
+
         if(not self.simulated):
             print("Set number of nodes (N)")
             self.nodes = chooseOption(1, 100, False)
@@ -29,15 +36,21 @@ class ErdosRenyi(Network):
             
             self.simulated = False
 
+    def graph(self):
+        return nx.erdos_renyi_graph(self.nodes,self.probabilityConnections)
+        
+    
     def __str__(self):
-        return (f"Network Erdős-Rényi configured:\n"
-                f"\tNumber of nodes set (N): {self.nodes}\n"
-                f"\tProbability that an edge exists between two nodes (P): {self.probabilityConnections}")
+        return (
+            f"Network Erdős-Rényi: "
+            f"Number of nodes set (N): {self.nodes} "
+            f"Probability of edge (P): {self.probabilityConnections}"
+    )
 
 
 class WattsStrogatz(Network):
     def __init__(self,simulated):
-        super().__init__(simulated)
+        super().__init__(simulated, "Watts-Strogatz")
         self.nodes = 10
         self.initialDirectNeighbours = 4
         self.probabilityRewired = 0.3
@@ -57,18 +70,21 @@ class WattsStrogatz(Network):
             self.probabilityRewired = chooseOption(0, 1, True)
             
             self.simulated = False
+            
+    def graph(self):
+        return nx.watts_strogatz_graph(self.nodes, self.initialDirectNeighbours, self.probabilityRewired)
     
     def __str__(self):
         return (
-            "Network Watts-Strogatz configured:\n"
-            f"\tNumber of nodes set (N): {self.nodes}\n"
-            f"\tNumber of nearest neighbors each node is initially connected to (K): {self.initialDirectNeighbours}\n"
-            f"\tRewire Probability set (P): {self.probabilityRewired}"
-            )
+            f"Network Watts-Strogatz: "
+            f"Nodes (N): {self.nodes} "
+            f"Neighbors (K): {self.initialDirectNeighbours} "
+            f"Rewire prob (P): {self.probabilityRewired}"
+        )
 
 class BarabasiAlbert(Network):
     def __init__(self,simulated):
-        super().__init__(simulated)
+        super().__init__(simulated, "Barabasi Albert")
         self.nodes = 10
         self.numberOfEdges = 2
 
@@ -80,9 +96,14 @@ class BarabasiAlbert(Network):
             self.numberOfEdges = chooseOption(1,self.nodes,False)
             self.simulated = False
     
+    def graph(self):
+        return nx.barabasi_albert_graph(self.nodes, self.numberOfEdges)
+    
+    
     def __str__(self):
         return (
-            "Network Barabasi configured:\n"
-            f"\tNumber of nodes set (N): {self.nodes}\n"
-            f"\tNumber of edges to attach from each new node (M): {self.numberOfEdges}"
-        )   
+            f"Network Barabasi Albert: "
+            f"Nodes (N): {self.nodes} "
+            f"Edges per node (M): {self.numberOfEdges}"
+        )
+  

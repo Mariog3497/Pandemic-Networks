@@ -1,4 +1,5 @@
 from menu import Menu
+from pandemic import Pandemic
 
 def main():
     menu = Menu()
@@ -15,9 +16,14 @@ def main():
             else:
                 print("You must first configurate your network")
         if option == 3:
-            print("showPandemicEvolution()")
+            if network!=None:
+                pandemic = Pandemic(0.7, 0.3, 10,network)
+                pandemic.showPandemicEvolution()
+            else:
+                print("You must first configurate your network")
+
             
-    print("FIN DEL PROGRAMA")   
+    print("EXIT")   
             
 if __name__ == "__main__":
     main()
