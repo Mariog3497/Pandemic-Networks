@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib
 import math
-from util import chooseOption
+from menu import *
+from colorama import init, Fore
 
 class Pandemic:
-
-    def __init__(self, infection, recovery, steps, network):
-        self.infection = infection
-        self.recovery = recovery
-        self.steps = steps
+    def __init__(self, network):
+        self.steps = 9
+        self.infection = 0.7
+        self.recovery = 0.3
         self.network = network
         self.graph = network.graph()
         self.colors = {'S': 'blue', 'I': 'red', 'R': 'green', 'D': 'grey'}
@@ -24,24 +24,7 @@ class Pandemic:
         initial_node = random.choice(list(self.graph.nodes()))
         self.state[initial_node] = 'I'
 
-    def showPandemicEvolution(self):
-        self.steps = 9
-        self.infection = 0.7
-        self.recovery = 0.3
-
-        print("Choose between 1. default or 2. configured pandemic")
-        optionSimulated = chooseOption(1, 2, False)
-
-        if optionSimulated == 2:
-            print("Set a number of steps")
-            self.steps = chooseOption(1, 9, False)
-
-            print("Set probability of infection")
-            self.infection = chooseOption(0, 1, True)
-
-            print("Set probability of recovery")
-            self.recovery = chooseOption(0, 1, True)
-
+    def generate_pandemic_evolution(self):
         self.initializeState()
         self.updateHistory()
         self.simulate()
