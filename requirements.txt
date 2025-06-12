@@ -1,0 +1,7 @@
+colorama
+re
+os
+networkx
+random
+matplotlib
+math
