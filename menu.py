@@ -14,6 +14,7 @@ class Menu:
     OPTION_6_EXIT = 6
     
     def main(self):
+        # This function displays the main menu, allowing the user to view and choose from the program’s six options.
         print(Fore.BLUE + "*----- [Network Simulator] ----------*" + Fore.RESET)
         print(Fore.BLUE + "|                                    |" + Fore.RESET)
         print(Fore.BLUE + "| 1. Network Settings                |" + Fore.RESET)
@@ -27,6 +28,7 @@ class Menu:
         return option
 
     def menu_choose_networks(self):
+        # This function displays a visual menu that allows the user to select one of the three available networks.
         print(Fore.BLUE + "*--------- [Choose Network] ---------*" + Fore.RESET)
         print(Fore.BLUE + "|                                    |" + Fore.RESET)
         print(Fore.BLUE + "| 1. Erdős-Rényi                     |" + Fore.RESET)
@@ -39,6 +41,7 @@ class Menu:
         return typeNetwork
     
     def menu_defualt_configured_network(self):
+        # This function presents a graphical menu allowing the user to select either a default or a configured network.
         print(Fore.BLUE + "*------- [Default or Configured Network] -------*" + Fore.RESET)
         print(Fore.BLUE + "|                                                |" + Fore.RESET)
         print(Fore.BLUE + "| 1. Default Network                             |" + Fore.RESET)
@@ -51,12 +54,13 @@ class Menu:
         return simulated   
 
     def menu_show_configuration_network(self, network):
+        # This function displays the available networks for the user to choose from.
         if ErdosRenyi.NAME == network.NAME:
             title_text = "[Erdos-Rényi Configuration]"
-            width = 47  # Total width of the box (including '*')
-            inner_width = width - 2  # Space between the two '*'
+            width = 47  
+            inner_width = width - 2  
 
-            # Calcular padding simétrico para centrar el título
+            
             title_length = len(title_text)
             total_padding = inner_width - title_length
             left_padding = total_padding // 2
@@ -126,6 +130,7 @@ class Menu:
     
     
     def menu_set_configuration_network(self, network):
+       # This function prompts the user for different parameters depending on the selected network.
         if ErdosRenyi.NAME == network.NAME and not network.simulated:
             print("Set number of nodes (N)")
             network.nodes = self.chooseOption(1, 100, False)
@@ -154,6 +159,7 @@ class Menu:
     
         
     def pandemic(self,network):
+        # This function displays the menu for choosing between a default or a custom pandemic setup."
         print(Fore.BLUE + "*------- [Pandemic Selection] -------*" + Fore.RESET)
         print(Fore.BLUE + "|                                    |" + Fore.RESET)
         print(Fore.BLUE + "| 1. Default Pandemic                |" + Fore.RESET)
@@ -162,6 +168,7 @@ class Menu:
         optionSimulated = self.chooseOption(1, 2, False)
         pandemic = Pandemic(network)
         if optionSimulated == 2:
+            # This option is activated when the custom pandemic setup is selected.
             print(Fore.BLUE + "Set a number of steps" + Fore.RESET)
             pandemic.steps = self.chooseOption(1, 9, False)
 
@@ -175,17 +182,18 @@ class Menu:
 
 
     def menu_show_configuration_pandemic(self, pandemic):
+        # This function is responsible for displaying the pandemic configuration menu.
         width = 48
         title = " Pandemic Settings "
         
-        # Línea superior con título centrado
+        
         title_bar = f"*{title.center(width - 2, '-')}*"
         print(Fore.BLUE + title_bar + Fore.RESET)
 
-        # Espacio vacío para separación
+        
         print(Fore.BLUE + f"|{' ' * (width - 2)}|" + Fore.RESET)
 
-        # Contenido formateado
+        
         line1 = f"Steps: {pandemic.steps}"
         line2 = f"Infection probability: {pandemic.infection}"
         line3 = f"Recovery probability: {pandemic.recovery}"
@@ -194,12 +202,13 @@ class Menu:
         print(Fore.BLUE + f"| {line2.ljust(width - 3)}|" + Fore.RESET)
         print(Fore.BLUE + f"| {line3.ljust(width - 3)}|" + Fore.RESET)
 
-        # Línea inferior
+        
         print(Fore.BLUE + f"*{'-' * (width - 2)}*" + Fore.RESET)
         
         
 
-    def chooseOption(self, min_val, max_val, is_decimal):
+    def chooseOption(self, min_val, max_val, is_decimal): 
+        # This function collects the parameters specified by the user and enforces some limits to their values.
         while True:
             try:
                 value = input(Fore.YELLOW + f"Choose option between {min_val}-{max_val}: " + Fore.RESET)
@@ -207,7 +216,7 @@ class Menu:
                 option = float(value) if is_decimal else int(value)
 
                 if option < min_val or option > max_val:
-                    print(f"{Fore.RED}❌ Error: '{option}' is not a valid option{Fore.RESET}")
+                    print(f"{Fore.RED}❌ Error: '{option}' is not a valid option{Fore.RESET}") # An error message is shown in case the parameters are incorrect.
                 else:
                     return int(option) if not is_decimal else option
 
@@ -215,10 +224,10 @@ class Menu:
                 print(f"{Fore.RED}❌ Error: '{value}' is not a valid option{Fore.RESET}")
     
     def clean(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear') # This function cleans the terminal to remove the previous visualizations.
         
     def press_to_continue(self):
-        input(Fore.YELLOW + "Press enter key to continue..." + Fore.RESET)
+        input(Fore.YELLOW + "👉 Press enter key to continue..." + Fore.RESET) # This function indicates user to press enter key to go to the next action.
         
     def error_message(self,message):
-        print(Fore.RED + message +Fore.RESET)
+        print(Fore.RED + message +Fore.RESET) # This function displays a red message indicating that an invalid option has been entered.
