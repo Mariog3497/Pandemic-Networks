@@ -4,7 +4,6 @@ from colorama import init, Fore
 from network import ErdosRenyi, WattsStrogatz, BarabasiAlbert
 
 class SimulationApp:
-    
     def __init__(self, menu):
         self.menu = menu
         self.network = None
@@ -13,9 +12,9 @@ class SimulationApp:
     def run(self):
         option = None
         while option != Menu.OPTION_6_EXIT:
-            self.menu.clean()
-            option = self.menu.main()
-            self.handle_option(option)
+            self.menu.clean() # Cleans the console to make it easier to read.
+            option = self.menu.main() # Asks user to choose and option.
+            self.handle_option(option) # Runs the choosen option.
 
     def handle_option(self, option):
         if option == Menu.OPTION_1_NETWORK_SETTINGS:
