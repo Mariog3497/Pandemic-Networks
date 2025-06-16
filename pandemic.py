@@ -7,32 +7,33 @@ import math
 from menu import *
 from colorama import init, Fore
 
-class Pandemic: # Class used for configuring the pandemic and its parameters.
+class Pandemic:
+    # Class used to configure the pandemic and its parameters
     def __init__(self, network):
-        self.steps = 9
-        self.infection = 0.7
-        self.recovery = 0.3
-        self.network = network
-        self.graph = network.graph()
-        self.colors = {'S': 'blue', 'I': 'red', 'R': 'green', 'D': 'grey'}
-        self.pos = nx.spring_layout(self.graph, seed=42)
-        self.state = {}
-        self.history = {'S': [], 'I': [], 'R': [], 'D': []}
+        self.steps = 9  # Number of time steps to simulate
+        self.infection = 0.7  # Probability of infection
+        self.recovery = 0.3  # Probability of recovery (else: death)
+        self.network = network  # Network topology object
+        self.graph = network.graph()  # The actual NetworkX graph
+        self.colors = {'S': 'blue', 'I': 'red', 'R': 'green', 'D': 'grey'}  # Colors for each state
+        self.pos = nx.spring_layout(self.graph, seed=42)  # Position of nodes for visualization
+        self.state = {}  # Current state of each node (S, I, R, D)
+        self.history = {'S': [], 'I': [], 'R': [], 'D': []}  # Time evolution of states
 
     def initializeState(self):
-        # This function initializes the states that will later be used to display the pandemic.
+        # Initializes the network with all nodes susceptible except one infected
         self.state = {n: 'S' for n in self.graph.nodes()}
         initial_node = random.choice(list(self.graph.nodes()))
         self.state[initial_node] = 'I'
 
     def generate_pandemic_evolution(self):
-        # This method coordinates the execution of other methods to ensure a structured workflow.
+        # Orchestrates the simulation steps
         self.initializeState()
         self.updateHistory()
         self.simulate()
 
     def updateHistory(self):
-        # This function records the history of states to later plot them.
+        # Records the number of nodes in each state at the current time step
         counts = {'S': 0, 'I': 0, 'R': 0, 'D': 0}
         for state in self.state.values():
             counts[state] += 1
@@ -40,7 +41,7 @@ class Pandemic: # Class used for configuring the pandemic and its parameters.
             self.history[key].append(counts[key])
 
     def simulate(self):
-        # This function compiles all time steps into a visual representation to illustrate the progression of the pandemic across the network.
+        # Main loop for simulating the pandemic over several steps and visualizing it
         cols = 3
         rows = math.ceil(self.steps / cols)
 
@@ -54,6 +55,7 @@ class Pandemic: # Class used for configuring the pandemic and its parameters.
             fontsize=16
         )
 
+        # Centers the plot window if using the TkAgg backend
         mng = plt.get_current_fig_manager()
         backend = matplotlib.get_backend()
         if backend == 'TkAgg':
@@ -86,7 +88,7 @@ class Pandemic: # Class used for configuring the pandemic and its parameters.
         self.plotStateEvolution()
 
     def pandemicStep(self):
-        # This function randomly assigns a type to each node based on the input infection and recovery parameters, distinguishing between susceptible, infected, recovered, and deceased individuals.
+        # Updates the state of the network based on infection and recovery probabilities
         new_state = self.state.copy()
 
         for node in self.graph.nodes():
@@ -103,13 +105,14 @@ class Pandemic: # Class used for configuring the pandemic and its parameters.
         self.updateHistory()
 
     def drawGraph(self, ax, step):
-        # This function changes the node's colors based on the state at each step.
+        # Draws the network at a given time step, coloring nodes by their state
         ax.clear()
         node_colors = [self.colors[self.state[n]] for n in self.graph.nodes()]
         nx.draw(self.graph, pos=self.pos, ax=ax, with_labels=True, node_color=node_colors, node_size=600)
         ax.set_title(f"Step {step}")
         ax.set_axis_off()
 
+        # Add a border around the graph panel
         rect = patches.Rectangle(
             (0, 0), 1, 1, transform=ax.transAxes,
             linewidth=2, edgecolor='black', facecolor='none'
@@ -117,7 +120,7 @@ class Pandemic: # Class used for configuring the pandemic and its parameters.
         ax.add_patch(rect)
 
     def plotStateEvolution(self):
-        # This function plots the temporal evolution of the SIRD model
+        # Plots the evolution of the number of nodes in each state over time
         steps = list(range(len(self.history['S'])))
         label_map = {
             'S': 'S - Susceptible',

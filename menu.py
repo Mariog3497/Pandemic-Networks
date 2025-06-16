@@ -6,15 +6,15 @@ import os
 
 class Menu:
     
-    OPTION_1_NETWORK_SETTINGS = 1
-    OPTION_2_SHOW_NETWORK_SETTINGS = 2
-    OPTION_3_PANDEMIC_SETTINGS = 3
-    OPTION_4_SHOW_PANDEMIC_SETTINGS = 4
-    OPTION_5_GENERATE_PANDEMIC_SIMULATION = 5
-    OPTION_6_EXIT = 6
+    OPTION_1_NETWORK_SETTINGS = 1  # Option to configure the network
+    OPTION_2_SHOW_NETWORK_SETTINGS = 2  # Option to show the network configuration
+    OPTION_3_PANDEMIC_SETTINGS = 3  # Option to configure the pandemic
+    OPTION_4_SHOW_PANDEMIC_SETTINGS = 4  # Option to show the pandemic configuration
+    OPTION_5_GENERATE_PANDEMIC_SIMULATION = 5  # Option to generate the pandemic simulation
+    OPTION_6_EXIT = 6  # Option to exit the program
     
     def main(self):
-        # This function displays the main menu, allowing the user to view and choose from the program’s six options.
+        # Display the main simulator menu
         print(Fore.BLUE + "*----- [Network Simulator] ----------*" + Fore.RESET)
         print(Fore.BLUE + "|                                    |" + Fore.RESET)
         print(Fore.BLUE + "| 1. Network Settings                |" + Fore.RESET)
@@ -28,7 +28,7 @@ class Menu:
         return option
 
     def menu_choose_networks(self):
-        # This function displays a visual menu that allows the user to select one of the three available networks.
+        # Display the network type selection menu
         print(Fore.BLUE + "*--------- [Choose Network] ---------*" + Fore.RESET)
         print(Fore.BLUE + "|                                    |" + Fore.RESET)
         print(Fore.BLUE + "| 1. Erdős-Rényi                     |" + Fore.RESET)
@@ -41,7 +41,7 @@ class Menu:
         return typeNetwork
     
     def menu_defualt_configured_network(self):
-        # This function presents a graphical menu allowing the user to select either a default or a configured network.
+        # Select between default or user-configured network
         print(Fore.BLUE + "*------- [Default or Configured Network] -------*" + Fore.RESET)
         print(Fore.BLUE + "|                                                |" + Fore.RESET)
         print(Fore.BLUE + "| 1. Default Network                             |" + Fore.RESET)
@@ -54,7 +54,7 @@ class Menu:
         return simulated   
 
     def menu_show_configuration_network(self, network):
-        # This function displays the available networks for the user to choose from.
+        # Display the current network configuration based on network type
         if ErdosRenyi.NAME == network.NAME:
             title_text = "[Erdos-Rényi Configuration]"
             width = 47  
@@ -130,7 +130,7 @@ class Menu:
     
     
     def menu_set_configuration_network(self, network):
-       # This function prompts the user for different parameters depending on the selected network.
+        # Request the user to configure parameters based on network type
         if ErdosRenyi.NAME == network.NAME and not network.simulated:
             print("Set number of nodes (N)")
             network.nodes = self.chooseOption(1, 100, False)
@@ -157,9 +157,8 @@ class Menu:
             network.numberOfEdges = self.chooseOption(1,network.nodes,False)
         return network
     
-        
-    def pandemic(self,network):
-        # This function displays the menu for choosing between a default or a custom pandemic setup."
+    def pandemic(self, network):
+        # Display menu to select pandemic settings (default or custom)
         print(Fore.BLUE + "*------- [Pandemic Selection] -------*" + Fore.RESET)
         print(Fore.BLUE + "|                                    |" + Fore.RESET)
         print(Fore.BLUE + "| 1. Default Pandemic                |" + Fore.RESET)
@@ -168,66 +167,50 @@ class Menu:
         optionSimulated = self.chooseOption(1, 2, False)
         pandemic = Pandemic(network)
         if optionSimulated == 2:
-            # This option is activated when the custom pandemic setup is selected.
             print(Fore.BLUE + "Set a number of steps" + Fore.RESET)
             pandemic.steps = self.chooseOption(1, 9, False)
-
             print(Fore.BLUE + "Set probability of infection" + Fore.RESET)
             pandemic.infection = self.chooseOption(0, 1, True)
-
             print(Fore.BLUE + "Set probability of recovery" + Fore.RESET)
             pandemic.recovery = self.chooseOption(0, 1, True)
-        
         return pandemic
 
-
     def menu_show_configuration_pandemic(self, pandemic):
-        # This function is responsible for displaying the pandemic configuration menu.
+        # Display the current pandemic configuration
         width = 48
         title = " Pandemic Settings "
-        
-        
         title_bar = f"*{title.center(width - 2, '-')}*"
         print(Fore.BLUE + title_bar + Fore.RESET)
-
-        
         print(Fore.BLUE + f"|{' ' * (width - 2)}|" + Fore.RESET)
-
-        
         line1 = f"Steps: {pandemic.steps}"
         line2 = f"Infection probability: {pandemic.infection}"
         line3 = f"Recovery probability: {pandemic.recovery}"
-
         print(Fore.BLUE + f"| {line1.ljust(width - 3)}|" + Fore.RESET)
         print(Fore.BLUE + f"| {line2.ljust(width - 3)}|" + Fore.RESET)
         print(Fore.BLUE + f"| {line3.ljust(width - 3)}|" + Fore.RESET)
-
-        
         print(Fore.BLUE + f"*{'-' * (width - 2)}*" + Fore.RESET)
-        
-        
 
-    def chooseOption(self, min_val, max_val, is_decimal): 
-        # This function collects the parameters specified by the user and enforces some limits to their values.
+    def chooseOption(self, min_val, max_val, is_decimal):
+        # Request a valid option from the user within given bounds
         while True:
             try:
                 value = input(Fore.YELLOW + f"Choose option between {min_val}-{max_val}: " + Fore.RESET)
-
                 option = float(value) if is_decimal else int(value)
-
                 if option < min_val or option > max_val:
-                    print(f"{Fore.RED}❌ Error: '{option}' is not a valid option{Fore.RESET}") # An error message is shown in case the parameters are incorrect.
+                    print(f"{Fore.RED}❌ Error: '{option}' is not a valid option{Fore.RESET}")
                 else:
                     return int(option) if not is_decimal else option
-
             except ValueError:
                 print(f"{Fore.RED}❌ Error: '{value}' is not a valid option{Fore.RESET}")
     
     def clean(self):
-        os.system('cls' if os.name == 'nt' else 'clear') # This function cleans the terminal to remove the previous visualizations.
+        # Clear the terminal screen
+        os.system('cls' if os.name == 'nt' else 'clear')
         
     def press_to_continue(self):
-        input(Fore.YELLOW + "👉 Press enter key to continue..." + Fore.RESET) # This function indicates user to press enter key to go to the next action.
+        # Wait for user to press Enter to continue
+        input(Fore.YELLOW + "👉 Press enter key to continue..." + Fore.RESET)
         
-    def error_message(self,message):
-        print(Fore.RED + message +Fore.RESET) # This function displays a red message indicating that an invalid option has been entered.
+    def error_message(self, message):
+        # Print an error message in red
+        print(Fore.RED + message + Fore.RESET)
