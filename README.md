@@ -1,6 +1,6 @@
 # 🦠 Pandemic Networks Simulator
 
-![Pandemic Networks Logo](./images/logo.png)
+![Pandemic Networks Logo](image/logo.png)
 
 **Pandemic Networks Simulator** was developed as part of the courses **Software and Computing for Applied Physics** and **Complex Networks**, within the Master’s degree program in Physics at the **University of Bologna (UniBo)**. Its main goal is to **facilitate the understanding of how the structure and properties of a network directly influence the spread of pandemics**.
 
@@ -165,11 +165,11 @@ Runs the simulation. Two visual outputs will be generated:
 If the simulation runs correctly, the user will obtain the following two visual outputs (as an example — the results will vary depending on the configured parameters):
 
 1. **Pandemic evolution on the network**  
-![Example of network evolution during the pandemic](./images/evolucion_nodos_ejemplo.png)
+![Example of network evolution during the pandemic](image/evolucion_nodos_ejemplo.png)
 
 
 2. **Temporal evolution of the pandemic (SIRD states)**  
-  ![Example of SIRD curve over time](./images/evolucion_pandemia_ejemplo.png)
+  ![Example of SIRD curve over time](image/evolucion_pandemia_ejemplo.png)
 
 Additionally:
 - 2️⃣ → **Show Network Configuration**: displays the current network setup  
